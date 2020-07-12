@@ -2,7 +2,7 @@ package utility
 
 import "bytes"
 
-func IsInSlice(slice []string, str string) bool {
+func InSlice(slice []string, str string) bool {
 	for _, i := range slice {
 		if i == str {
 			return true
