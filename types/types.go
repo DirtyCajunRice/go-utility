@@ -78,12 +78,13 @@ func (t *UnixTimestamp) String(format ...string) string {
 }
 
 // Scan re-implements the database/sql Scan() method.
-// It will convert the RFC 3339 string found in the
-// response to a UnixTimestamp struct
+// It will convert the "almost" RFC3339 string found
+// in the response to a UnixTimestamp struct
 func (t *UnixTimestamp) Scan(src interface{}) error {
+	const almostRFC3339 = "2006-01-02 15:04:05-07:00"
 	switch src.(type) {
 	case string:
-		if v, err := time.Parse(time.RFC3339, src.(string)); err != nil {
+		if v, err := time.Parse(almostRFC3339, src.(string)); err != nil {
 			return err
 		} else {
 			*t = UnixTimestamp(v)
