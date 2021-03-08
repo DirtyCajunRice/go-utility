@@ -3,47 +3,10 @@ package types
 import (
 	"database/sql/driver"
 	"encoding/xml"
-	"errors"
 	"fmt"
 	"strconv"
 	"time"
 )
-
-// ConvertibleBoolean is a custom boolean struct used for manipulating
-// booleans of string, integer, and boolean to/from JSON and SQL
-type ConvertibleBoolean bool
-
-// UnmarshalJSON re-implements the encoding/json Unmarshal method.
-// It will cast the any of the truthy/falsy variants to boolean
-func (bit *ConvertibleBoolean) UnmarshalJSON(data []byte) error {
-	asString := string(data)
-	if asString == "1" || asString == "true" {
-		*bit = true
-	} else if asString == "0" || asString == "false" || asString == "null" {
-		*bit = false
-	} else {
-		return errors.New(fmt.Sprintf("Boolean unmarshal error: invalid input %s", asString))
-	}
-	return nil
-}
-
-// Scan re-implements the database/sql Scan() method.
-// It will map the integer found in the response to
-// its boolean equivalent
-func (bit *ConvertibleBoolean) Scan(src interface{}) error {
-	switch src.(type) {
-	case int64:
-		switch src.(int64) {
-		case 0:
-			*bit = false
-		case 1:
-			*bit = true
-		default:
-			return errors.New("incompatible type for ConvertibleBoolean")
-		}
-	}
-	return nil
-}
 
 // UnixTimestamp is a custom time.Time struct used for manipulating
 // unix timestamps to/from JSON, XML, and SQL
@@ -98,30 +61,4 @@ func (t *UnixTimestamp) Scan(src interface{}) error {
 // time.Time struct
 func (t UnixTimestamp) Value() (driver.Value, error) {
 	return time.Time(t), nil
-}
-
-// IntString is a custom int struct used for manipulating
-// ints of string to/from JSON
-type IntString int
-
-// UnmarshalJSON re-implements the encoding/json Unmarshal method.
-// It will cast the string to int type
-func (i *IntString) UnmarshalJSON(data []byte) error {
-	unquote, err := strconv.Unquote(string(data))
-	if err != nil {
-		return err
-	}
-	var integer int
-	integer, err = strconv.Atoi(unquote)
-	if err != nil {
-		return err
-	}
-	*i = IntString(integer)
-	return nil
-}
-
-// MarshalJSON re-implements the encoding/json Marshal method.
-// It will return a quote-enclosed int as []byte
-func (i IntString) MarshalJSON() ([]byte, error) {
-	return []byte(fmt.Sprintf("\"%d\"", i)), nil
 }
