@@ -99,3 +99,18 @@ func (t *UnixTimestamp) Scan(src interface{}) error {
 func (t UnixTimestamp) Value() (driver.Value, error) {
 	return time.Time(t), nil
 }
+
+// IntString is a custom int struct used for manipulating
+// ints of string to/from JSON
+type IntString int
+
+// UnmarshalJSON re-implements the encoding/json Unmarshal method.
+// It will cast the string to int type
+func (i *IntString) UnmarshalJSON(data []byte) error {
+	integer, err := strconv.Atoi(string(data))
+	if err != nil {
+		return err
+	}
+	*i = IntString(integer)
+	return nil
+}
