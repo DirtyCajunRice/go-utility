@@ -6,7 +6,7 @@ import (
 )
 
 // IntString is a custom int struct used for manipulating
-// ints of string to/from JSON
+// ints of string to/from JSON. NOT NEEDED use `json:",string"`
 type IntString int
 
 // UnmarshalJSON re-implements the encoding/json Unmarshal method.
