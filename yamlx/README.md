@@ -32,7 +32,6 @@ import (
 	"io/ioutil"
 
 	"gopkg.in/DirtyCajunRice/go-utility/yamlx.v0"
-	"gopkg.in/yaml.v3"
 )
 
 type Example struct {
@@ -64,7 +63,7 @@ func main() {
 	}
 	
 	processor := yamlx.NewProcessor(example)
-	err = yaml.Unmarshal([]byte(data2), processor)
+	err = yamlx.Unmarshal([]byte(data2), processor)
 	if err != nil {
 		panic(err)
 	}
