@@ -13,14 +13,14 @@ The import path for the package is *gopkg.in/DirtyCajunRice/go-utility/yamlx.v0*
 
 To install it, run:
 
-    go get gopkg.in/DirtyCajunRice/go-utility/yamlx.v0
+    go get github.com/DirtyCajunRice/go-utility
 
 API documentation
 -----------------
 
 If opened in a browser, the import path itself leads to the API documentation:
 
-- [https://gopkg.in/DirtyCajunRice/go-utility/yamlx.v0](https://gopkg.in/DirtyCajunRice/go-utility/yamlx.v0)
+- [https://gopkg.in/DirtyCajunRice/go-utility.v0](https://gopkg.in/DirtyCajunRice/go-utility.v0)
 
 Example
 -------
@@ -31,7 +31,7 @@ package main
 import (
 	"io/ioutil"
 
-	"gopkg.in/DirtyCajunRice/go-utility/yamlx.v0"
+	"github.com/DirtyCajunRice/go-utility/yamlx"
 )
 
 type Example struct {
